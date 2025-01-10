@@ -40,7 +40,6 @@ class ExampleCreateView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def get(self, request):
-        print(request.data)
         instance = ExampleModel.objects.get(id=request.query_params['id'])
         serializer = ExampleModelSerializer(instance)
         return Response(serializer.data, status=status.HTTP_200_OK)
