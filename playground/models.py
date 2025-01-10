@@ -6,5 +6,3 @@ class ExampleModel(models.Model):
     description = models.TextField()
 
 
-class Meta:
-    db_table = 'django_test'

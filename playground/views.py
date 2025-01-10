@@ -32,10 +32,33 @@ class ExampleCreateView(APIView):
         else:
             print('serializer not valid!')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # serializer = ExampleModelSerializer(data=request.data)
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def get(self, request):
+        print(request.data)
+        queryset = ExampleModel.objects.all()
+        serializer = ExampleModelSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def get(self, request):
+        print(request.data)
+        instance = ExampleModel.objects.get(id=request.query_params['id'])
+        serializer = ExampleModelSerializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def put(self, request):
+        print(request.data)
+        instance = ExampleModel.objects.get(id=request.data['id'])
+        serializer = ExampleModelSerializer(instance, data=request.data)
+        if serializer.is_valid():
+            print('serializer valid!')
+            serializer.update(instance, serializer.validated_data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request):
+        print(request.data)
+        instance = ExampleModel.objects.get(id=request.data['id'])
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
