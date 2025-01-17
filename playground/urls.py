@@ -4,5 +4,5 @@ from .views import ExampleCreateView
 
 urlpatterns =[
     # path('hello/', views.say_hallo()),
-    path('api', ExampleCreateView.as_view(), name='example-create'),
+    path('api/', ExampleCreateView.as_view(), name='example-create'),
 ]

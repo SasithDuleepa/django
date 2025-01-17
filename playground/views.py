@@ -33,16 +33,21 @@ class ExampleCreateView(APIView):
             print('serializer not valid!')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# handle with params    
     def get(self, request):
-        print(request.data)
-        queryset = ExampleModel.objects.all()
-        serializer = ExampleModelSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    def get(self, request):
-        instance = ExampleModel.objects.get(id=request.query_params['id'])
-        serializer = ExampleModelSerializer(instance)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+       
+        id = request.query_params.get('id', None)
+
+        if(id == None):  
+            queryset = ExampleModel.objects.all()
+            serializer = ExampleModelSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        else:
+            instance = ExampleModel.objects.get(id=request.query_params['id'])
+            serializer = ExampleModelSerializer(instance)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request):
         print(request.data)
@@ -56,7 +61,7 @@ class ExampleCreateView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request):
-        print(request.data)
+        print( request.data)
         instance = ExampleModel.objects.get(id=request.data['id'])
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
